@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FL Office AI Innovation Competition</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0a0f1e;
+      --navy-mid: #111827;
+      --navy-card: #161d2e;
+      --blue-accent: #2563eb;
+      --blue-light: #3b82f6;
+      --blue-muted: #1e3a5f;
+      --text-primary: #f9fafb;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --border: #1f2937;
+      --success: #10b981;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--navy);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--navy);
+      z-index: 100;
+    }
+    nav .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue-light);
+    }
+    nav .brand span { color: var(--text-muted); font-weight: 400; }
+
+    /* HERO */
+    .hero {
+      padding: 5rem 2rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .hero-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--blue-light);
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.25rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+    }
+    .hero p {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      max-width: 560px;
+      margin-bottom: 2rem;
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    .hero-meta-item svg { color: var(--text-muted); flex-shrink: 0; }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--blue-accent);
+      color: #fff;
+      padding: 0.75rem 1.75rem;
+      border-radius: 6px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover { background: var(--blue-light); }
+    .deadline-note {
+      margin-top: 1rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+    .deadline-note strong { color: var(--text-primary); }
+
+    /* DETAILS STRIP */
+    .details-strip {
+      background: var(--navy-mid);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 3.5rem 2rem;
+    }
+    .details-grid {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2.5rem;
+    }
+    .detail-col .col-num {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue-light);
+      margin-bottom: 0.35rem;
+    }
+    .detail-col .col-num span {
+      color: var(--text-muted);
+      margin-left: 0.5rem;
+      font-weight: 400;
+    }
+    .detail-col h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .detail-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .detail-col ul li {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+    .detail-col ul li::before {
+      content: '—';
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .prize-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.875rem;
+    }
+    .prize-num {
+      width: 2rem;
+      height: 2rem;
+      background: var(--blue-muted);
+      color: var(--blue-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .prize-body strong { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .prize-body span { font-size: 0.8rem; color: var(--text-secondary); }
+
+    /* CTA BANNER */
+    .cta-banner {
+      background: linear-gradient(135deg, #0f1f40 0%, #1a2d5a 100%);
+      border: 1px solid var(--blue-muted);
+      border-radius: 12px;
+      padding: 2rem 2.5rem;
+      max-width: 900px;
+      margin: 3.5rem auto;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .cta-banner img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    .cta-banner-text .overline {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+    .cta-banner-text h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    .cta-banner-text p { font-size: 0.9rem; color: var(--text-secondary); max-width: 480px; }
+
+    /* FORM SECTION */
+    .form-section {
+      padding: 4rem 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .form-header {
+      margin-bottom: 2.5rem;
+    }
+    .form-header .step-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue-light);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .form-header h2 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .form-header p { font-size: 0.9375rem; color: var(--text-secondary); }
+
+    .form-card {
+      background: var(--navy-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2.5rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+    .field { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.25rem; }
+    .field:last-child { margin-bottom: 0; }
+    .field label {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .field input, .field textarea, .field select {
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.65rem 0.875rem;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      font-family: inherit;
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      outline: none;
+      border-color: var(--blue-accent);
+    }
+    .field input::placeholder, .field textarea::placeholder { color: var(--text-muted); }
+    .field textarea { resize: vertical; min-height: 130px; }
+    .field .hint { font-size: 0.75rem; color: var(--text-muted); }
+
+    .file-upload-area {
+      background: var(--navy-mid);
+      border: 1.5px dashed var(--border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s;
+      position: relative;
+    }
+    .file-upload-area:hover, .file-upload-area.dragover { border-color: var(--blue-accent); }
+    .file-upload-area input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .file-upload-area .upload-icon { color: var(--text-muted); margin-bottom: 0.5rem; }
+    .file-upload-area p { font-size: 0.875rem; color: var(--text-secondary); }
+    .file-upload-area .file-name { font-size: 0.8rem; color: var(--blue-light); margin-top: 0.4rem; }
+
+    .form-footer {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .form-footer p { font-size: 0.8rem; color: var(--text-muted); }
+
+    .btn-submit {
+      background: var(--blue-accent);
+      color: #fff;
+      padding: 0.75rem 2rem;
+      border-radius: 6px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      transition: background 0.15s, opacity 0.15s;
+      min-width: 160px;
+    }
+    .btn-submit:hover { background: var(--blue-light); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* SUCCESS STATE */
+    .success-message {
+      display: none;
+      background: var(--navy-card);
+      border: 1px solid var(--success);
+      border-radius: 10px;
+      padding: 3rem 2.5rem;
+      text-align: center;
+    }
+    .success-message .check-icon {
+      width: 3rem;
+      height: 3rem;
+      background: rgba(16,185,129,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      color: var(--success);
+    }
+    .success-message h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .success-message p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ERROR */
+    .error-banner {
+      display: none;
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.4);
+      border-radius: 6px;
+      padding: 0.875rem 1rem;
+      font-size: 0.85rem;
+      color: #fca5a5;
+      margin-top: 1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2rem;
+    }
+
+    /* Scroll target */
+    #submit { scroll-margin-top: 80px; }
+
+    /* ── EXTRA FUN COLORS ─────────────────────────────────────────────── */
+    :root {
+      --gold: #f59e0b;
+      --gold-light: #fcd34d;
+      --teal: #0d9488;
+      --teal-light: #2dd4bf;
+      --coral: #f43f5e;
+    }
+
+    /* Gradient hero title */
+    .hero h1 {
+      background: linear-gradient(120deg, #f9fafb 0%, #93c5fd 50%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Prize badge colors */
+    .prize-num-1 { background: linear-gradient(135deg, #b45309, #fcd34d); color: #1a1200; }
+    .prize-num-2 { background: linear-gradient(135deg, #374151, #d1d5db); color: #111; }
+    .prize-num-3 { background: linear-gradient(135deg, #7c2d12, #fb923c); color: #1a0a00; }
+
+
+    /* Dancing star */
+    @keyframes danceStar {
+      0%   { transform: translateY(0) rotate(0deg) scale(1); }
+      20%  { transform: translateY(-12px) rotate(30deg) scale(1.15); }
+      40%  { transform: translateY(4px) rotate(-15deg) scale(0.95); }
+      60%  { transform: translateY(-8px) rotate(20deg) scale(1.1); }
+      80%  { transform: translateY(2px) rotate(-10deg) scale(1); }
+      100% { transform: translateY(0) rotate(0deg) scale(1); }
+    }
+    .dancing-star {
+      display: inline-block;
+      font-size: 2rem;
+      animation: danceStar 1.8s ease-in-out infinite;
+      filter: drop-shadow(0 0 8px #fcd34d);
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+
+    /* ── FALLING STONE CRABS ─────────────────────────────────────────── */
+    #crab-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 999;
+      overflow: hidden;
+    }
+    .crab {
+      position: absolute;
+      top: -80px;
+      font-size: 2.2rem;
+      opacity: 0.85;
+      animation: crabFall linear infinite;
+      user-select: none;
+    }
+    @keyframes crabFall {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 0.9; }
+      10%  { opacity: 0.85; }
+      90%  { opacity: 0.7; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Teal accent on detail cols */
+    .detail-col .col-num { color: var(--teal-light); }
+    .detail-col:first-child .col-num { color: var(--gold-light); }
+    .detail-col:last-child .col-num { color: var(--coral); }
+
+    /* Fun border on form card */
+    .form-card {
+      border-color: #1e3a5f;
+      box-shadow: 0 0 0 1px rgba(45,212,191,.08), 0 4px 32px rgba(0,0,0,.4);
+    }
+    .form-card:focus-within {
+      box-shadow: 0 0 0 1px rgba(45,212,191,.2), 0 4px 32px rgba(0,0,0,.4);
+    }
+
+    /* CTA banner spice */
+    .cta-banner {
+      background: linear-gradient(135deg, #0f2040 0%, #1a3060 40%, #0f3030 100%);
+      border-color: var(--teal);
+      box-shadow: 0 0 40px rgba(13,148,136,.15);
+    }
+
+    /* Gold highlight for first prize */
+    .prize-item:first-child .prize-body strong { color: var(--gold-light); }
+
+    /* Confetti strip below hero label */
+    .confetti-dots {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 1rem;
+    }
+    .confetti-dots span {
+      width: 6px; height: 6px; border-radius: 50%;
+      animation: dotBounce 1.4s ease-in-out infinite;
+    }
+    .confetti-dots span:nth-child(1) { background: var(--gold); animation-delay: 0s; }
+    .confetti-dots span:nth-child(2) { background: var(--teal-light); animation-delay: .15s; }
+    .confetti-dots span:nth-child(3) { background: var(--blue-light); animation-delay: .3s; }
+    .confetti-dots span:nth-child(4) { background: var(--coral); animation-delay: .45s; }
+    .confetti-dots span:nth-child(5) { background: var(--gold-light); animation-delay: .6s; }
+    @keyframes dotBounce {
+      0%, 80%, 100% { transform: scale(1); opacity: .7; }
+      40% { transform: scale(1.6); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="brand">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      Florida Office
+      <span>·</span>
+      <span>Cursor Champion</span>
+    </div>
+  </nav>
+
+  <!-- FALLING CRABS LAYER -->
+  <div id="crab-canvas"></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="confetti-dots">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="hero-label">Florida Office · Cursor Champion</div>
+    <h1>FL Office AI Innovation Competition <span class="dancing-star">⭐</span></h1>
+    <p>Submit your most innovative Cursor use case. The top 10 demo live at the <strong style="color:#93c5fd">June 26th Friday happy hour</strong> — the whole office picks the winners.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span style="color:#fcd34d;font-weight:600">Fri, June 26 · 3–4 PM</span>
+      </div>
+      <div class="hero-meta-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        TBD — Miami office
+      </div>
+      <div class="hero-meta-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        10 presenters · Open to all
+      </div>
+    </div>
+    <a href="#submit" class="btn-primary">Submit your use case</a>
+    <p class="deadline-note">Submissions close <strong>June 13th</strong></p>
+  </section>
+
+  <!-- EVENT DETAILS -->
+  <section class="details-strip">
+    <div class="details-grid">
+      <div class="detail-col">
+        <div class="col-num">01 <span>The Event</span></div>
+        <h3>🎉 Friday, June 26th · 3–4 PM</h3>
+        <ul>
+          <li>10 colleagues compete for the title (Format: 3-minute demo + 1-minute Q&A)</li>
+          <li>Miami office colleagues learn about Cursor</li>
+          <li>Location: TBD — Miami office</li>
+        </ul>
+      </div>
+      <div class="detail-col">
+        <div class="col-num">02 <span>How It Works</span></div>
+        <h3>From submission to live vote</h3>
+        <ul>
+          <li>Submit your use case by June 13th</li>
+          <li>AI Champions review submissions and select the top 10</li>
+          <li>In-person presentation where the full office votes the winners</li>
+        </ul>
+      </div>
+      <div class="detail-col">
+        <div class="col-num">03 <span>Prizes</span></div>
+        <h3>What you can win</h3>
+        <div class="prize-item">
+          <div class="prize-num prize-num-1">🏆</div>
+          <div class="prize-body">
+            <strong>🥇 First place</strong>
+            <span>FL Office Cursor Champion title · South offices spotlight · 3 × $50 gift cards · <strong style="color:#fcd34d">🦀 Stone Crab dinner at Joe's!</strong></span>
+          </div>
+        </div>
+        <div class="prize-item">
+          <div class="prize-num prize-num-2">🥈</div>
+          <div class="prize-body">
+            <strong>Second place</strong>
+            <span>2 × $50 gift cards</span>
+          </div>
+        </div>
+        <div class="prize-item">
+          <div class="prize-num prize-num-3">🥉</div>
+          <div class="prize-body">
+            <strong>Third place</strong>
+            <span>1 × $50 gift card</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <div style="padding: 0 2rem;">
+    <div class="cta-banner">
+      <div class="cta-banner-text">
+        <div class="overline" style="color:var(--teal-light)">What's at stake</div>
+        <h2>Become the <em style="color:#fcd34d">FL Office Cursor Champion 👑</em></h2>
+        <p>Bragging rights, the champion crown, your name in the South Florida offices email, and a stack of gift cards (e.g., Joe's Stone Crab, Casa Neos).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMISSION FORM -->
+  <section class="form-section" id="submit">
+    <div class="form-header">
+      <div class="step-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Step 1 · Submit
+      </div>
+      <h2>Tell us about your use case</h2>
+      <p>Demos beat slides every time. Be specific about what you built and the impact.</p>
+    </div>
+
+    <!-- Form card -->
+    <div class="form-card" id="form-card">
+      <form id="submission-form">
+        <div class="form-row">
+          <div class="field">
+            <label for="full_name">Full name *</label>
+            <input type="text" id="full_name" name="full_name" placeholder="Jane Smith" required />
+          </div>
+          <div class="field">
+            <label for="email">McKinsey email *</label>
+            <input type="email" id="email" name="email" placeholder="jane_smith@mckinsey.com" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="team">Team / practice *</label>
+          <input type="text" id="team" name="team" placeholder="e.g. QuantumBlack, Operations, Strategy…" required />
+        </div>
+
+        <div class="field">
+          <label for="description">Tell us about what you built *</label>
+          <textarea id="description" name="description" placeholder="Describe the problem you solved, how you used Cursor, and the impact it had. Be specific — the best entries will have concrete metrics or clear before/after comparisons." required></textarea>
+          <span class="hint">Pro tip: demos beat slides. Add a link to a recording or screen capture in your description, or attach files directly in the email that opens when you submit.</span>
+        </div>
+
+        <div class="error-banner" id="error-banner"></div>
+
+        <div class="form-footer">
+          <p style="color:var(--text-muted);font-size:0.8rem">Clicking submit opens Outlook pre-filled — just hit Send.</p>
+          <button type="submit" class="btn-submit" id="submit-btn">Submit use case</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Success state -->
+    <div class="success-message" id="success-message">
+      <div class="check-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3>Almost there — hit Send in Outlook!</h3>
+      <p>Your email should have opened pre-filled with your submission. Just attach any demos or screenshots and hit <strong style="color:#f9fafb">Send</strong>. Good luck! 🦀</p>
+    </div>
+  </section>
+
+  <footer>
+    🦀 FL Office AI Innovation Competition · McKinsey &amp; Company · Submissions close June 13th · Fri June 26 Happy Hour ⭐
+  </footer>
+
+  <script>
+    // ── FALLING STONE CRABS ─────────────────────────────────────────────────
+    (function spawnCrabs() {
+      const canvas = document.getElementById('crab-canvas');
+      const crabs = ['🦀','🦀','🦀','⭐','🦀','🦀'];
+      let active = 0;
+      const MAX = 6;
+
+      function drop() {
+        if (active >= MAX) return;
+        active++;
+        const el = document.createElement('div');
+        el.className = 'crab';
+        el.textContent = crabs[Math.floor(Math.random() * crabs.length)];
+        const size = 1.4 + Math.random() * 1.4;
+        const dur  = 4 + Math.random() * 5;
+        const left = 2 + Math.random() * 94;
+        el.style.cssText = `left:${left}%;font-size:${size}rem;animation-duration:${dur}s;animation-delay:0s;`;
+        canvas.appendChild(el);
+        setTimeout(() => { el.remove(); active--; }, dur * 1000 + 200);
+      }
+
+      setInterval(drop, 900);
+      setTimeout(drop, 200);
+      setTimeout(drop, 500);
+      setTimeout(drop, 800);
+    })();
+
+    // ── FORM SUBMISSION — opens Outlook pre-filled ────────────────────────────
+    document.getElementById('submission-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const btn         = document.getElementById('submit-btn');
+      const errorBanner = document.getElementById('error-banner');
+      errorBanner.style.display = 'none';
+
+      const full_name   = document.getElementById('full_name').value.trim();
+      const email       = document.getElementById('email').value.trim();
+      const team        = document.getElementById('team').value.trim();
+      const description = document.getElementById('description').value.trim();
+
+      const subject = `FL Office AI Competition — ${full_name}'s submission`;
+
+      const body =
+`Hi Mora,
+
+Here is my submission for the FL Office AI Innovation Competition.
+
+─────────────────────────────────────
+NAME:    ${full_name}
+EMAIL:   ${email}
+TEAM:    ${team}
+─────────────────────────────────────
+
+WHAT I BUILT:
+${description}
+
+─────────────────────────────────────
+📎 Attach any screenshots, decks, or demo videos to this email before sending.
+`;
+
+      const mailto = `mailto:mora_guyot@mckinsey.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      // Open Outlook (or default mail client)
+      window.location.href = mailto;
+
+      // Show success message after a short delay
+      setTimeout(() => {
+        document.getElementById('form-card').style.display = 'none';
+        document.getElementById('success-message').style.display = 'block';
+      }, 800);
+    });
+  </script>
+</body>
+</html>
